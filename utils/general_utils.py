@@ -14,6 +14,7 @@ import sys
 from datetime import datetime
 import numpy as np
 import random
+import cv2
 
 def inverse_sigmoid(x):
     return torch.log(x/(1-x))
@@ -131,3 +132,12 @@ def safe_state(silent):
     np.random.seed(0)
     torch.manual_seed(0)
     torch.cuda.set_device(torch.device("cuda:0"))
+
+def lapl_var(image):
+    # Convert the image to grayscale
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Compute the Laplacian of the image and then the variance
+    laplacian_var = cv2.Laplacian(gray_image, cv2.CV_64F).var()
+
+    return laplacian_var
